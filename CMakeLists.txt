@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.1)
 project(BreezySLAM)
 
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+include(TargetArch)
+target_architecture(arch)
+
 file(GLOB_RECURSE ${PROJECT_NAME}_C_SOURCES "c/*.c")
 list(REMOVE_ITEM ${PROJECT_NAME}_C_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/c/coreslam_armv7l.c)
 list(REMOVE_ITEM ${PROJECT_NAME}_C_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/c/coreslam_i686.c)
@@ -8,5 +12,21 @@ list(REMOVE_ITEM ${PROJECT_NAME}_C_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/c/coresla
 file(GLOB_RECURSE ${PROJECT_NAME}_CPP_SOURCES "cpp/*.cpp")
 list(REMOVE_ITEM ${PROJECT_NAME}_CPP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/cpp/Laser.cpp)
 
+set(C_FLAGS "")
+if (UNIX)
+    set(C_FLAGS -fPIC)
+endif()
+
+if (${arch} MATCHES "arm*")
+    list(APPEND ${PROJECT_NAME}_C_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/c/coreslam_armv7l.c)
+    set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/c/coreslam_armv7l.c PROPERTIES COMPILE_FLAGS -mfpu=neon)
+elseif(${arch} MATCHES "i386")
+    list(APPEND ${PROJECT_NAME}_C_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/c/coreslam_i686.c)
+    set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/c/coreslam_i686.c PROPERTIES COMPILE_FLAGS -msse3)
+else()
+    list(APPEND ${PROJECT_NAME}_C_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/c/coreslam_sisd.c)
+endif()
+
 add_library(${PROJECT_NAME} ${${PROJECT_NAME}_C_SOURCES} ${${PROJECT_NAME}_CPP_SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC c cpp)
+target_compile_options(${PROJECT_NAME} PRIVATE ${C_FLAGS})
