@@ -1,31 +1,33 @@
+#ifndef BREEZYSLAM_RANDOM_H
+#define BREEZYSLAM_RANDOM_H
 /*
 
-random.h - Function prototypes for a random-number generator supporting normal 
+random.h - Function prototypes for a random-number generator supporting normal
 distributions
 
 Copyright (C) 2014 Simon D. Levy
 
 
 This code is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as 
-published by the Free Software Foundation, either version 3 of the 
+it under the terms of the GNU Lesser General Public License as
+published by the Free Software Foundation, either version 3 of the
 License, or (at your option) any later version.
 
-This code is distributed in the hope that it will be useful,     
+This code is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License 
+You should have received a copy of the GNU Lesser General Public License
 along with this code.  If not, see <http:#www.gnu.org/licenses/>.
 */
 
 #include "stdlib.h"
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 extern "C" {
 #endif
-    
+
 /* Returns size of random-number generator in bytes */
 size_t random_size(void);
 
@@ -44,6 +46,8 @@ void random_free(void * v);
 /* Returns a  standard normal variate with mean mu, variance sigma */
 double random_normal(void * v, double mu, double sigma);
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 }
 #endif
+
+#endif // BREEZYSLAM_RANDOM_H

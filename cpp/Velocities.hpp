@@ -1,20 +1,22 @@
+#ifndef BREEZYSLAM_VELOCITIES_HPP
+#define BREEZYSLAM_VELOCITIES_HPP
 /**
-* 
+*
 * Velocities.hpp - C++ header for Velocities class
 *
 * Copyright (C) 2014 Simon D. Levy
 
 * This code is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as 
-* published by the Free Software Foundation, either version 3 of the 
+* it under the terms of the GNU Lesser General Public License as
+* published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
-* This code is distributed in the hope that it will be useful,     
+*
+* This code is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU Lesser General Public License 
+*
+* You should have received a copy of the GNU Lesser General Public License
 * along with this code.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -23,18 +25,18 @@
 
 #include <iostream>
 #include <vector>
-using namespace std; 
+using namespace std;
 
 
 /**
 * A class representing the forward and angular velocities of a robot.
 */
-class Velocities 
-{    
+class Velocities
+{
     friend class Scan;
-    
+
 public:
-    
+
 /**
 * Creates a new Velocities object with specified velocities.
 */
@@ -66,23 +68,23 @@ Velocities(void)
 void update(double dxy_mm, double dtheta_degrees, double dtSeconds)
 {
     double velocity_factor = (dtSeconds > 0) ?  (1 / dtSeconds) : 0;
-    
+
     this->dxy_mm = dxy_mm * velocity_factor;
-    
+
     this->dtheta_degrees = dtheta_degrees * velocity_factor;
 }
 
 friend ostream& operator<< (ostream & out, Velocities & velocities)
 {
     char str[100];
-    
+
     sprintf(str, "<dxy=%7.0f mm dtheta = %+3.3f degrees dt = %f s",
-        velocities.dxy_mm, 
+        velocities.dxy_mm,
         velocities.dtheta_degrees,
         velocities.dt_seconds);
-    
+
     out << str;
-    
+
     return out;
 }
 
@@ -91,3 +93,5 @@ double dxy_mm;
 double dtheta_degrees;
 double dt_seconds;
 };
+
+#endif // BREEZYSLAM_VELOCITIES_HPP
