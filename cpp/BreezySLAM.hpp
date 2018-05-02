@@ -23,6 +23,7 @@
 
 #include "Velocities.hpp"
 #include "Position.hpp"
+#include "Laser.hpp"
 #include "algorithms.hpp"
 
 #endif // BREEZYSLAM_BREEZYSLAM_HPP
